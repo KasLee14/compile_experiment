@@ -3,4 +3,4 @@ project(compile_experiment)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(compile_experiment main.cpp)
+add_executable(compile_experiment main.cpp scanner.cpp scanner.h)
