@@ -73,11 +73,5 @@ private:
 };
 
 
-int  get_start_state();
-
-int  move( int state_src,  char ch );
-
-enum Token_Type  state_is_final(int state);
-
 
 #endif //COMPILE_EXPERIMENT_SCANNER_H

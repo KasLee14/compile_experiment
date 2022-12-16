@@ -166,7 +166,7 @@ struct ExprNode* Component() {
 
 struct ExprNode* Atom() {
 	struct ExprNode* atom_Node;
-
+    struct Token token_tmp = token;
 	switch (token.type) {
 	case CONST_ID:
 		atom_Node = MakeExprNode(token.type, token.value); MatchToken(token.type); break;
@@ -174,9 +174,10 @@ struct ExprNode* Atom() {
 		atom_Node = MakeExprNode(token.type); MatchToken(token.type); break;
 	case FUNC:
 	{
-		struct Token token_tmp = token;
+
 		MatchToken(token.type); MatchToken(L_BRACKET); atom_Node = MakeExprNode(FUNC, token_tmp.FuncPtr, Expression());
-		MatchToken(R_BRACKET); break;
+		MatchToken(R_BRACKET);
+        break;
 	}
 	case L_BRACKET:
 		MatchToken(token.type); atom_Node = Expression(); MatchToken(R_BRACKET); break;

@@ -65,7 +65,6 @@ Token scanner::check_token(const char *c_str){
 //识别并返回一个记号。遇到非法输入时 .type=ERRTOKEN、文件结束时 .type=NONTOKEN
 Token scanner::GetToken(){
 
-
     Token token;
     memset(&token, 0, sizeof(Token));
     empty_token_str();
