@@ -1,7 +1,8 @@
 #include "parse.h"
 #include "stdio.h"
-#include "semantics.c"
+#include "semantics.cpp"
 
+//本文件在语法分析器模块的基础上，增加了语义处理所需的代码
 scanner scan;
 
 //函数区
