@@ -64,23 +64,24 @@ void cal_coord(struct ExprNode *x_ptr, struct ExprNode *y_ptr) {
 
 	// 返回变换后点的坐标
 	Draw_x = x_val;
-    	Draw_y= y_val;
+    Draw_y = y_val;
 }
 
 // 绘制一个点
 void draw_pixel(unsigned long x, unsigned long y) {
-	putpixel(x, y, RED);
+    SetPixel(hDC, x, y, RGB(255,0,0));
+    SetPixel(hDC, x+1, y, RGB(255,0,0));
+    SetPixel(hDC, x, y+1, RGB(255,0,0));
+    SetPixel(hDC, x+1, y+1, RGB(255,0,0));
 }
+
 
 // 图形绘制
 void draw_loop(double start_val, double end_val, double step_val, struct ExprNode *x_ptr, struct ExprNode *y_ptr)
 {
-	initgraph(640, 480);
-	for (Parameter = start_val; Parameter <= end_val; Parameter += step_val) {
-		cal_coord(x_ptr, y_ptr);
-		putpixel(Draw_x, Draw_y, RED);
-	}
-	_getch();
-	closegraph();
+    for(Parameter = start_val; Parameter <= end_val; Parameter += step_val){
+        cal_coord(x_ptr, y_ptr);
+        draw_pixel(Draw_x, Draw_y);
+    }
 }
 
