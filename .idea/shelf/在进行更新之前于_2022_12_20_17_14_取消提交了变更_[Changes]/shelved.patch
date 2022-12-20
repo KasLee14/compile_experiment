@@ -1,0 +1,40 @@
+Index: semantics.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>#include <stdlib.h>\r\n#include <math.h>\r\n#include <graphics.h>\r\n\r\n\r\n#include \"semantic.h\"\r\n\r\nstruct Token token;\r\ndouble Parameter = 0;\r\ndouble Origin_x = 0.0, Origin_y = 0.0;\r\ndouble Rot_ang = 0.0;\r\ndouble Scale_x = 1, Scale_y = 1;\r\ndouble Draw_x, Draw_y;\r\n\r\n\r\n//计算表达式的值\r\ndouble get_expr_value(struct ExprNode *root) {\r\n\tif (root == NULL)\r\n\t\treturn 0.0;\r\n\tswitch (root -> OpCode) {\r\n\t\tcase PLUS:\r\n\t\t\treturn GetExprValue(root->Content.CaseOperator.Left) + GetExprValue(root->Content.CaseOperator.Right);\r\n\t\t\tbreak;\r\n\t\tcase MINUS:\r\n\t\t\treturn GetExprValue(root->Content.CaseOperator.Left) - GetExprValue(root->Content.CaseOperator.Right);\r\n\t\t\tbreak;\r\n\t\tcase MUL:\r\n\t\t\treturn GetExprValue(root->Content.CaseOperator.Left) * GetExprValue(root->Content.CaseOperator.Right);\r\n\t\t\tbreak;\r\n\t\tcase DIV:\r\n\t\t\treturn GetExprValue(root->Content.CaseOperator.Left) * GetExprValue(root->Content.CaseOperator.Right);\r\n\t\t\tbreak;\r\n\t\tcase POWER:\r\n\t\t\treturn pow(GetExprValue(root->Content.CaseOperator.Left), GetExprValue(root->Content.CaseOperator.Right));\r\n\t\t\tbreak;\r\n\t\tcase FUNC:\r\n\t\t\treturn ((FuncPtr)root->Content.CaseFunc.MathFuncPtr)(get_expr_value(root->Content.CaseFunc.Child));\r\n\t\tcase CONST_ID :\r\n\t\t\treturn root->Content.CaseConst;\r\n\t\t\tbreak;\r\n\t\tcase T:\r\n\t\t\treturn Parameter;\r\n\t\tdefault:\r\n\t\t\treturn 0.0 ;\r\n\t}\r\n}\r\n\r\n//计算点的实际坐标值\r\nvoid CalcCoord(struct ExprNode *x_nptr, struct ExprNode *y_nptr, double &x, double &y) {\r\n\tdouble x_val, x_temp, y_val;\r\n\r\n\t// 计算表达式的值，得到点的原始坐标\r\n\tx_val = get_expr_value(x_ptr);\r\n\ty_val = get_expr_value(y_ptr);\r\n\r\n\t// 比例变换\r\n\tx_val *= Scale_x ;\r\n\ty_val *= Scale_y ;\r\n\r\n\t// 旋转变换\r\n\tx_temp = x_val * cos(rot_angle) + y_val * sin(rot_angle);\r\n\ty_val  = y_val * cos(rot_angle) - x_val * sin(rot_angle);\r\n\tx_val  = x_temp;\r\n\r\n\t// 平移变换\r\n\tx_val += Origin_x;\r\n\ty_val += Origin_y;\r\n\r\n\t// 返回变换后点的坐标\r\n\tx = x_val;\r\n\ty = y_val;\r\n}\r\n\r\n// 绘制一个点\r\nvoid draw_pixel(unsigned long x, unsigned long y) {\r\n\tputpixel(x, y, RED);\r\n}\r\n\r\n// 图形绘制\r\nvoid draw_loop(double start_val, double end_val, double step_val, struct ExprNode *x_ptr, struct ExprNode *y_ptr);\r\n{\r\n\tinitgraph(640, 480);\r\n\tfor (Parameter = start_val; Parameter <= end_val; Parameter += step_val) {\r\n\t\tCalcCoord(x_ptr, y_ptr);\r\n\t\tputpixel(Draw_x, Draw_y, RED);\r\n\t}\r\n\t_getch();\r\n\tclosegraph();\r\n}\r\n\r\n
+===================================================================
+diff --git a/semantics.c b/semantics.c
+--- a/semantics.c	
++++ b/semantics.c	
+@@ -1,9 +1,8 @@
+ #include <stdlib.h>
+-#include <math.h>
+ #include <graphics.h>
++#include <math.h>
+ 
+-
+-#include "semantic.h"
++#include "semantics.h"
+ 
+ struct Token token;
+ double Parameter = 0;
+@@ -50,8 +49,8 @@
+ 	double x_val, x_temp, y_val;
+ 
+ 	// 计算表达式的值，得到点的原始坐标
+-	x_val = get_expr_value(x_ptr);
+-	y_val = get_expr_value(y_ptr);
++	x_val = get_expr_value(x_nptr);
++	y_val = get_expr_value(y_nptr);
+ 
+ 	// 比例变换
+ 	x_val *= Scale_x ;
+@@ -77,7 +76,7 @@
+ }
+ 
+ // 图形绘制
+-void draw_loop(double start_val, double end_val, double step_val, struct ExprNode *x_ptr, struct ExprNode *y_ptr);
++void draw_loop(double start_val, double end_val, double step_val, struct ExprNode *x_ptr, struct ExprNode *y_ptr)
+ {
+ 	initgraph(640, 480);
+ 	for (Parameter = start_val; Parameter <= end_val; Parameter += step_val) {

@@ -1,0 +1,29 @@
+<changelist name="在进行更新之前于_2022_12_20_17_14_取消提交了变更_[Changes]1" date="1671527679933" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2022_12_20_17_14_取消提交了变更_[Changes]1/shelved.patch" />
+  <option name="DESCRIPTION" value="在进行更新之前于 2022/12/20 17:14 取消提交了变更 [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="cmake-build-debug/CMakeFiles/rules.ninja" />
+    <option name="AFTER_PATH" value="cmake-build-debug/CMakeFiles/rules.ninja" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2022_12_20_17_14_取消提交了变更_[Changes]1/rules.ninja" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value=".vs/compile_experiment/v17/.wsuo" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2022_12_20_17_14_取消提交了变更_[Changes]1/.wsuo" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="cmake-build-debug/CMakeFiles/3.21.1/CMakeDetermineCompilerABI_C.bin" />
+    <option name="AFTER_PATH" value="cmake-build-debug/CMakeFiles/3.21.1/CMakeDetermineCompilerABI_C.bin" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2022_12_20_17_14_取消提交了变更_[Changes]1/CMakeDetermineCompilerABI_C.bin" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="cmake-build-debug/CMakeFiles/3.21.1/CMakeDetermineCompilerABI_CXX.bin" />
+    <option name="AFTER_PATH" value="cmake-build-debug/CMakeFiles/3.21.1/CMakeDetermineCompilerABI_CXX.bin" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2022_12_20_17_14_取消提交了变更_[Changes]1/CMakeDetermineCompilerABI_CXX.bin" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value=".vs/compile_experiment/FileContentIndex/7f7ab1fa-ee47-433e-b281-e3e58b17e5ae.vsidx" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2022_12_20_17_14_取消提交了变更_[Changes]1/7f7ab1fa-ee47-433e-b281-e3e58b17e5ae.vsidx" />
+  </binary>
+</changelist>
