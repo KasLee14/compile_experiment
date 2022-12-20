@@ -143,7 +143,7 @@ void ForStatement() {
 		PrintSyntaxTree(y_ptr, 0);
 		printf("\n");
 	*/
-	draw_loop(get_expr_value(start_ptr),get_expr_value(end_ptr),get_expr_value(step_ptr),x_ptr,y_ptr)
+	draw_loop(get_expr_value(start_ptr),get_expr_value(end_ptr),get_expr_value(step_ptr),x_ptr,y_ptr);
 
 }
 
