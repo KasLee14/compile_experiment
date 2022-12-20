@@ -1,6 +1,6 @@
 #include "parse.h"
 #include "stdio.h"
-#include "semantic.c"
+#include "semantics.c"
 
 scanner scan;
 
