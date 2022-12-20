@@ -15,9 +15,6 @@ extern double Origin_x, Origin_y ;  //横、纵平移距离
 extern double Rot_ang; //旋转角度
 extern double Scale_x, Scale_y ;   //横、纵比例因子
 
-//数据结构区
-typedef double(*FuncPtr)(double);
-
 //辅助语义函数
 
 // 获得表达式的值
