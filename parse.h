@@ -1,15 +1,8 @@
 #ifndef PARSE_H
 #define PARSE_H
 
-#include"scanner.h"
 //本文件在语法分析器模块的基础上，增加了语义处理所需的代码
 #include"semantics.h"
-//全局变量区
-struct Token token;
-double Parameter;
-
-//数据结构区
-typedef double(*FuncPtr)(double);
 
 // 表达式节点
 struct ExprNode
