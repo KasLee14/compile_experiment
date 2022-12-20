@@ -4,9 +4,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <ctype.h>
-#include <windows.h>
 #include <iostream>
-#include <wingdi.h>
+
 
 enum Token_Type			  // 记号的类别
 {

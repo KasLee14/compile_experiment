@@ -2,6 +2,8 @@
 #define SEMANTICS_H
 
 #include "parse.h"
+#include <wingdi.h>
+#include <windows.h>
 
 //语义分析主要通过在语法分析过程得到实现。
 //由于没有采用面向对象的方法，语义分析通过加入语义分析辅助函数后的语法分析函数实现
