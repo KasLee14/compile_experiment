@@ -2,25 +2,31 @@
 #define SEMANTICS_H
 
 #include "scanner.h"
-//ÓïÒå·ÖÎöÖ÷ÒªÍ¨¹ıÔÚÓï·¨·ÖÎö¹ı³ÌµÃµ½ÊµÏÖ¡£
-//ÓÉÓÚÃ»ÓĞ²ÉÓÃÃæÏò¶ÔÏóµÄ·½·¨£¬ÓïÒå·ÖÎöÍ¨¹ı¼ÓÈëÓïÒå·ÖÎö¸¨Öúº¯ÊıºóµÄÓï·¨·ÖÎöº¯ÊıÊµÏÖ
-//È«¾Ö±äÁ¿Çø
+#include "parse.h"
+
+//è¯­ä¹‰åˆ†æä¸»è¦é€šè¿‡åœ¨è¯­æ³•åˆ†æè¿‡ç¨‹å¾—åˆ°å®ç°ã€‚
+//ç”±äºæ²¡æœ‰é‡‡ç”¨é¢å‘å¯¹è±¡çš„æ–¹æ³•ï¼Œè¯­ä¹‰åˆ†æé€šè¿‡åŠ å…¥è¯­ä¹‰åˆ†æè¾…åŠ©å‡½æ•°åçš„è¯­æ³•åˆ†æå‡½æ•°å®ç°
+
+//å…¨å±€å˜é‡åŒº
 extern struct Token token;
 
-extern double Parameter; //²ÎÊı
-extern double Origin_x, Origin_y ;  //ºá¡¢×İÆ½ÒÆ¾àÀë
-extern double Rot_ang; //Ğı×ª½Ç¶È
-extern double Scale_x, Scale_y ;   //ºá¡¢×İ±ÈÀıÒò×Ó
+extern double Parameter; //å‚æ•°
+extern double Origin_x, Origin_y ;  //æ¨ªã€çºµå¹³ç§»è·ç¦»
+extern double Rot_ang; //æ—‹è½¬è§’åº¦
+extern double Scale_x, Scale_y ;   //æ¨ªã€çºµæ¯”ä¾‹å› å­
 
-//¸¨ÖúÓïÒåº¯Êı
+//æ•°æ®ç»“æ„åŒº
+typedef double(*FuncPtr)(double);
 
-// »ñµÃ±í´ïÊ½µÄÖµ
+//è¾…åŠ©è¯­ä¹‰å‡½æ•°
+
+// è·å¾—è¡¨è¾¾å¼çš„å€¼
 double get_expr_value(struct ExprNode *root);
-// ¼ÆËãµãµÄ×ø±ê
-void cal_coord(struct ExprNode *x_nptr, struct ExprNode *y_nptr, double &x, double &y);
-// »æÖÆÒ»¸öµã
+// è®¡ç®—ç‚¹çš„åæ ‡
+void cal_coord(struct ExprNode *x_ptr, struct ExprNode *y_ptr, double &x, double &y);
+// ç»˜åˆ¶ä¸€ä¸ªç‚¹
 void draw_pixel(unsigned long x, unsigned long y);
-// Í¼ĞÎ»æÖÆ
+// å›¾å½¢ç»˜åˆ¶
 void draw_loop(double start_val, double end_val, double step_val, struct ExprNode *x_ptr, struct ExprNode *y_ptr);
 
 #endif
