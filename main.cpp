@@ -17,10 +17,9 @@ int CheckSrcFile(const char * file_name){
 }
 
 
-int main(int argc, char*argv[]) {
+int main() {
 
-//    if(argc < 2) printf("Cannot detect file");
-//    if(CheckSrcFile(argv[1]) == 0) return 1;
+
 
     char * file_name = "C:\\Users\\Kas\\Desktop\\test.txt";
     Parser(file_name);

@@ -24,7 +24,7 @@ enum Token_Type			  // 记号的类别
 struct Token
 {
     enum Token_Type  type;  // 类别，规定所有记号的类别（命名常数便于记忆/理解）
-    char const * lexeme;  // 属性，原始输入的字符串，亦可为数组
+    char * lexeme;  // 属性，原始输入的字符串，亦可为数组
     double value;  // 属性，若记号是常数则存常数的值
     double (* FuncPtr)(double);  // 属性，若记号是函数则存函数地址
 

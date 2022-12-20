@@ -56,7 +56,7 @@ void scanner::back_char(char next_char){
 // 加入字符到记号缓冲区
 void scanner::add_in_token_str(char next_char){
 
-    int len = sizeof(token_buf);
+    int len = strlen(token_buf);
     token_buf[len] = next_char;  //把字符存入缓冲区
     token_buf[len + 1] = '\0';  //把缓冲区末尾设置为终止符
 
@@ -73,7 +73,7 @@ void scanner::empty_token_str(){
 Token scanner::check_token(const char *c_str){
 
     Token token;
-    for(int i = 0; i < 17; i++){
+    for(int i = 0; i <= 17; i++){
         if(strcmp(c_str, TokenTab[i].lexeme) == 0) return TokenTab[i];
     }
     memset(&token, 0, sizeof(Token));
