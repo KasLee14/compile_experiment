@@ -1,4 +1,6 @@
 #include "semantics.h"
+#include <graphics.h>
+#include <conio.h>
 
 struct Token token;
 double Parameter = 0;
