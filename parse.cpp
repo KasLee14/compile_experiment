@@ -9,7 +9,7 @@ struct Token token;
 scanner scan;
 
 //函数区
-void Parser(char *SrcFilePtr) {
+void Parser(char * SrcFilePtr) {
 	/*语法分析主程序:
 	调用词法分析器的GetToken函数（封装在FetchToken中）返回记号，
 	 然后使用核心产生式program()对记号流进行递归下降分析，
@@ -330,7 +330,7 @@ void PrintSyntaxTree(struct ExprNode *root, int indent) {//打印表达式的语
 			break;
 
 		case FUNC:
-			printf("%s%x\n", blank, root->Content.CaseFunc.MathFuncPtr);
+			printf("%s%p\n", blank, root->Content.CaseFunc.MathFuncPtr);
 			if (root->Content.CaseFunc.Child != NULL)
 				PrintSyntaxTree(root->Content.CaseFunc.Child, indent + 1);
 			break;

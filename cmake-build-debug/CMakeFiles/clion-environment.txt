@@ -1,4 +1,4 @@
-ToolSet: 17.0 (local)@D:\Software\VS2022
-Options: msvc.arch=amd64
+ToolSet: w64 9.0 (local)@D:\Software\JetBrains\CLion 2021.3.3\bin\mingw
+Options: 
 
 Options:-DCMAKE_MAKE_PROGRAM=D:/Software/JetBrains/CLion 2021.3.3/bin/ninja/win/ninja.exe

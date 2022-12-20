@@ -75,12 +75,10 @@ Token scanner::check_token(const char *c_str){
     Token token;
     for(int i = 0; i < 17; i++){
         if(strcmp(c_str, TokenTab[i].lexeme) == 0) return TokenTab[i];
-        else{
-            memset(&token, 0, sizeof(Token));
-            token.type = ERRTOKEN;
-            return token;
-        }
     }
+    memset(&token, 0, sizeof(Token));
+    token.type = ERRTOKEN;
+    return token;
 
 }
 

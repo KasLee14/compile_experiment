@@ -1,8 +1,11 @@
 #ifndef COMPILE_EXPERIMENT_SCANNER_H
 #define COMPILE_EXPERIMENT_SCANNER_H
 
-#include <bits/stdc++.h>
+#include <stdio.h>
+#include <math.h>
+#include <ctype.h>
 #include <windows.h>
+#include <iostream>
 #include <wingdi.h>
 
 enum Token_Type			  // 记号的类别
@@ -21,14 +24,14 @@ enum Token_Type			  // 记号的类别
 struct Token
 {
     enum Token_Type  type;  // 类别，规定所有记号的类别（命名常数便于记忆/理解）
-    char * lexeme;  // 属性，原始输入的字符串，亦可为数组
+    char const * lexeme;  // 属性，原始输入的字符串，亦可为数组
     double value;  // 属性，若记号是常数则存常数的值
     double (* FuncPtr)(double);  // 属性，若记号是函数则存函数地址
 
 };
 
 //区分记号的符号表
-extern struct Token TokenTab[]；
+extern struct Token TokenTab[];
 
 const int token_len = 100;
 

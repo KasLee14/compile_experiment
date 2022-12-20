@@ -1,7 +1,7 @@
 #include "semantics.h"
-#include <graphics.h>
 #include <conio.h>
 
+HDC hDC;
 double Parameter = 0;
 double Origin_x = 0.0, Origin_y = 0.0;
 double Rot_ang = 0.0;
