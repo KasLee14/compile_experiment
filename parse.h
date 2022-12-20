@@ -2,38 +2,39 @@
 #define PARSE_H
 
 #include"scanner.h"
-
-//È«¾Ö±äÁ¿Çø
+//æœ¬æ–‡ä»¶åœ¨è¯­æ³•åˆ†æå™¨æ¨¡å—çš„åŸºç¡€ä¸Šï¼Œå¢åŠ äº†è¯­ä¹‰å¤„ç†æ‰€éœ€çš„ä»£ç 
+#include"semantics.h"
+//å…¨å±€å˜é‡åŒº
 struct Token token;
 double Parameter;
 
-//Êı¾İ½á¹¹Çø
+//æ•°æ®ç»“æ„åŒº
 typedef double(*FuncPtr)(double);
 
-// ±í´ïÊ½½Úµã
+// è¡¨è¾¾å¼èŠ‚ç‚¹
 struct ExprNode
 {
-	enum Token_Type OpCode;//¼ÇºÅÖÖÀà
+	enum Token_Type OpCode;//è®°å·ç§ç±»
 	union {
 		struct {
 			struct ExprNode* Left, * Right;
-		}CaseOperator;//¶şÔªÔËËã
+		}CaseOperator;//äºŒå…ƒè¿ç®—
 
 		struct {
 			struct ExprNode* Child;
 			FuncPtr MathFuncPtr;
-		}CaseFunc;//º¯Êıµ÷ÓÃ
+		}CaseFunc;//å‡½æ•°è°ƒç”¨
 
-		double CaseConst;//³£Êı£¬°ó¶¨ÓÒÖµ
-		double* CaseParmPtr;//²ÎÊıT£¬°ó¶¨×óÖµ
+		double CaseConst;//å¸¸æ•°ï¼Œç»‘å®šå³å€¼
+		double* CaseParmPtr;//å‚æ•°Tï¼Œç»‘å®šå·¦å€¼
 	}Content;
 };
 
 
-//º¯ÊıÇø
-void Parser(char* SrcFilePtr);//Óï·¨·ÖÎöÖ÷³ÌĞò
+//å‡½æ•°åŒº
+void Parser(char* SrcFilePtr);//è¯­æ³•åˆ†æä¸»ç¨‹åº
 
-//Ö÷º¯Êı£º²úÉúÊ½(Óï¾ä¼¶)Âß¼­Çø
+//ä¸»å‡½æ•°ï¼šäº§ç”Ÿå¼(è¯­å¥çº§)é€»è¾‘åŒº
 void Program();
 void Statement();
 void OriginStatment();
@@ -41,23 +42,23 @@ void RotStatement();
 void ScaleStatment();
 void ForStatement();
 
-//Ö÷º¯Êı£º²úÉúÊ½(±í´ïÊ½¼¶)Âß¼­Çø
+//ä¸»å‡½æ•°ï¼šäº§ç”Ÿå¼(è¡¨è¾¾å¼çº§)é€»è¾‘åŒº
 struct ExprNode* Expression();
 struct ExprNode* Term();
 struct ExprNode* Factor();
 struct ExprNode* Component();
 struct ExprNode* Atom();
 
-//¹¹½¨Óï·¨Ê÷
+//æ„å»ºè¯­æ³•æ ‘
 struct ExprNode* MakeExprNode(enum Token_Type opcode, ...);
 
-//¸¨Öúº¯Êı
+//è¾…åŠ©å‡½æ•°
 void FetchToken();
 void MatchToken(enum Token_Type AToken);
 void SyntaxError(int case_of);
 
-//²âÊÔº¯Êı
-void PrintSyntaxTree(struct ExprNode* root, int indent);//´òÓ¡±í´ïÊ½µÄÓï·¨Ê÷
+//æµ‹è¯•å‡½æ•°
+void PrintSyntaxTree(struct ExprNode* root, int indent);//æ‰“å°è¡¨è¾¾å¼çš„è¯­æ³•æ ‘
 
 
 #endif
