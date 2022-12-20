@@ -1,8 +1,7 @@
 #ifndef COMPILE_EXPERIMENT_SCANNER_H
 #define COMPILE_EXPERIMENT_SCANNER_H
 
-#include <stdio.h>
-#include <math.h>
+#include <bits/stdc++.h>
 #include <windows.h>
 #include <wingdi.h>
 
