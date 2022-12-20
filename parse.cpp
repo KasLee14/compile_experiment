@@ -1,106 +1,155 @@
-#include"parse.h"
-#include"stdio.h"
+#include "parse.h"
+#include "stdio.h"
+#include "semantic.c"
 
 scanner scan;
-//º¯ÊıÇø
-void Parser(char* SrcFilePtr) {
-	/*Óï·¨·ÖÎöÖ÷³ÌĞò:
-	µ÷ÓÃ´Ê·¨·ÖÎöÆ÷µÄGetTokenº¯Êı£¨·â×°ÔÚFetchTokenÖĞ£©·µ»Ø¼ÇºÅ£¬
-	 È»ºóÊ¹ÓÃºËĞÄ²úÉúÊ½program()¶Ô¼ÇºÅÁ÷½øĞĞµİ¹éÏÂ½µ·ÖÎö£¬
-	 ÅĞ¶Ï¼ÇºÅÁ÷µÄ½á¹¹ÊÇ·ñ·ûºÏÎÄ·¨¹æÔò
+
+//å‡½æ•°åŒº
+void Parser(char *SrcFilePtr) {
+	/*è¯­æ³•åˆ†æä¸»ç¨‹åº:
+	è°ƒç”¨è¯æ³•åˆ†æå™¨çš„GetTokenå‡½æ•°ï¼ˆå°è£…åœ¨FetchTokenä¸­ï¼‰è¿”å›è®°å·ï¼Œ
+	 ç„¶åä½¿ç”¨æ ¸å¿ƒäº§ç”Ÿå¼program()å¯¹è®°å·æµè¿›è¡Œé€’å½’ä¸‹é™åˆ†æï¼Œ
+	 åˆ¤æ–­è®°å·æµçš„ç»“æ„æ˜¯å¦ç¬¦åˆæ–‡æ³•è§„åˆ™
 	*/
 	if (!scan.InitScanner(SrcFilePtr)) {
 		printf("open Source File Error!\n");
 		return;
 	}
-	FetchToken();//·µ»ØµÄ¼ÇºÅ´æ·ÅÔÚÈ«¾Ö±äÁ¿tokenÖĞ
-	Program();//µİ¹éÏÂ½µµÄºËĞÄ²úÉúÊ½
+	FetchToken();//è¿”å›çš„è®°å·å­˜æ”¾åœ¨å…¨å±€å˜é‡tokenä¸­
+	Program();//é€’å½’ä¸‹é™çš„æ ¸å¿ƒäº§ç”Ÿå¼
 	scan.CloseScanner();
 }
 
-//Ö÷º¯Êı£º²úÉúÊ½(Óï¾ä¼¶£©Âß¼­Çø
+//ä¸»å‡½æ•°ï¼šäº§ç”Ÿå¼(è¯­å¥çº§ï¼‰é€»è¾‘åŒº
 void Program() {
-	while (token.type != NONTOKEN) {//´Ê·¨·ÖÎöÆ÷Êä³öNONTOKEN±íÊ¾ÒÑ´ï¼ÇºÅÁ÷Ä©Î²
-		Statement();//Æ¥ÅäÒ»ÌõÓï¾ä
+	while (token.type != NONTOKEN) {//è¯æ³•åˆ†æå™¨è¾“å‡ºNONTOKENè¡¨ç¤ºå·²è¾¾è®°å·æµæœ«å°¾
+		Statement();//åŒ¹é…ä¸€æ¡è¯­å¥
 		MatchToken(SEMICO);
 	}
 }
 
 void Statement() {
-	switch (token.type)
-	{
-	case ORIGIN:OriginStatment(); break;
-	case ROT:RotStatement(); break;
-	case SCALE:ScaleStatment(); break;
-	case FOR:ForStatement(); break;
-	default:SyntaxError(2);
+	switch (token.type) {
+		case ORIGIN:
+			OriginStatment();
+			break;
+		case ROT:
+			RotStatement();
+			break;
+		case SCALE:
+			ScaleStatment();
+			break;
+		case FOR:
+			ForStatement();
+			break;
+		default:
+			SyntaxError(2);
 	}
 }
 
 void OriginStatment() {
-	struct ExprNode* origin_x, * origin_y;
-	MatchToken(ORIGIN); MatchToken(IS); MatchToken(L_BRACKET);
-	origin_x = Expression(); MatchToken(COMMA);
-	origin_y = Expression(); MatchToken(R_BRACKET);
-
-	//²âÊÔº¯Êı£º´òÓ¡±í´ïÊ½µÄÓï·¨Ê÷
-	printf("[*]SyntaxTree:\n");
-	PrintSyntaxTree(origin_x, 0); printf("\n");
-	printf("[*]SyntaxTree:\n");
-	PrintSyntaxTree(origin_y, 0); printf("\n");
+	struct ExprNode *origin_x, * origin_y;
+	MatchToken(ORIGIN);
+	MatchToken(IS);
+	MatchToken(L_BRACKET);
+	origin_x = Expression();
+	MatchToken(COMMA);
+	origin_y = Expression();
+	MatchToken(R_BRACKET);
+	/*
+		//æµ‹è¯•å‡½æ•°ï¼šæ‰“å°è¡¨è¾¾å¼çš„è¯­æ³•æ ‘
+		printf("[*]SyntaxTree:\n");
+		PrintSyntaxTree(origin_x, 0);
+		printf("\n");
+		printf("[*]SyntaxTree:\n");
+		PrintSyntaxTree(origin_y, 0);
+		printf("\n");
+	*/
+	Origin_x = get_expr_value(origin_x);
+	Origin_y = get_expr_value(origin_y);
 }
 
 void RotStatement() {
-	struct ExprNode* rotate;
-	MatchToken(ROT); MatchToken(IS);
+	struct ExprNode *rotate;
+	MatchToken(ROT);
+	MatchToken(IS);
 	rotate = Expression();
 
-	//²âÊÔº¯Êı£º´òÓ¡±í´ïÊ½µÄÓï·¨Ê÷
+	/*
+	//æµ‹è¯•å‡½æ•°ï¼šæ‰“å°è¡¨è¾¾å¼çš„è¯­æ³•æ ‘
 	printf("[*]SyntaxTree:\n");
-	PrintSyntaxTree(rotate, 0); printf("\n");
+	PrintSyntaxTree(rotate, 0);
+	printf("\n");
+	*/
+	
+	Rot_ang = get_expr_value(rotate);
 
 }
 
 void ScaleStatment() {
-	struct ExprNode* scale_x, * scale_y;
-	MatchToken(SCALE); MatchToken(IS); MatchToken(L_BRACKET);
-	scale_x = Expression(); MatchToken(COMMA);
-	scale_y = Expression(); MatchToken(R_BRACKET);
+	struct ExprNode *scale_x, * scale_y;
+	MatchToken(SCALE);
+	MatchToken(IS);
+	MatchToken(L_BRACKET);
+	scale_x = Expression();
+	MatchToken(COMMA);
+	scale_y = Expression();
+	MatchToken(R_BRACKET);
 
-	//²âÊÔº¯Êı£º´òÓ¡±í´ïÊ½µÄÓï·¨Ê÷
-	printf("[*]SyntaxTree:\n");
-	PrintSyntaxTree(scale_x, 0); printf("\n");
-	printf("[*]SyntaxTree:\n");
-	PrintSyntaxTree(scale_y, 0); printf("\n");
+	/*
+		//æµ‹è¯•å‡½æ•°ï¼šæ‰“å°è¡¨è¾¾å¼çš„è¯­æ³•æ ‘
+		printf("[*]SyntaxTree:\n");
+		PrintSyntaxTree(scale_x, 0); printf("\n");
+		printf("[*]SyntaxTree:\n");
+		PrintSyntaxTree(scale_y, 0); printf("\n");
+	*/
+	Scale_x = get_expr_value(scale_x);
+	Scale_y = get_expr_value(scale_y);
 }
 
 void ForStatement() {
-	struct ExprNode* start_ptr, * end_ptr, * step_ptr, * x_ptr, * y_ptr;
+	struct ExprNode *start_ptr, * end_ptr, * step_ptr, * x_ptr, * y_ptr;
 
-	MatchToken(FOR); MatchToken(T); MatchToken(FROM); start_ptr = Expression();
-	MatchToken(TO); end_ptr = Expression();
-	MatchToken(STEP); step_ptr = Expression();
-	MatchToken(DRAW); MatchToken(L_BRACKET); x_ptr = Expression();
-	MatchToken(COMMA); y_ptr = Expression();
+	MatchToken(FOR);
+	MatchToken(T);
+	MatchToken(FROM);
+	start_ptr = Expression();
+	MatchToken(TO);
+	end_ptr = Expression();
+	MatchToken(STEP);
+	step_ptr = Expression();
+	MatchToken(DRAW);
+	MatchToken(L_BRACKET);
+	x_ptr = Expression();
+	MatchToken(COMMA);
+	y_ptr = Expression();
 	MatchToken(R_BRACKET);
 
-	//²âÊÔº¯Êı£º´òÓ¡±í´ïÊ½µÄÓï·¨Ê÷
-	printf("[*]SyntaxTree:\n");
-	PrintSyntaxTree(start_ptr, 0); printf("\n");
-	printf("[*]SyntaxTree:\n");
-	PrintSyntaxTree(end_ptr, 0); printf("\n");
-	printf("[*]SyntaxTree:\n");
-	PrintSyntaxTree(step_ptr, 0); printf("\n");
-	printf("[*]SyntaxTree:\n");
-	PrintSyntaxTree(x_ptr, 0); printf("\n");
-	printf("[*]SyntaxTree:\n");
-	PrintSyntaxTree(y_ptr, 0); printf("\n");
+	/*
+		//æµ‹è¯•å‡½æ•°ï¼šæ‰“å°è¡¨è¾¾å¼çš„è¯­æ³•æ ‘
+		printf("[*]SyntaxTree:\n");
+		PrintSyntaxTree(start_ptr, 0);
+		printf("\n");
+		printf("[*]SyntaxTree:\n");
+		PrintSyntaxTree(end_ptr, 0);
+		printf("\n");
+		printf("[*]SyntaxTree:\n");
+		PrintSyntaxTree(step_ptr, 0);
+		printf("\n");
+		printf("[*]SyntaxTree:\n");
+		PrintSyntaxTree(x_ptr, 0);
+		printf("\n");
+		printf("[*]SyntaxTree:\n");
+		PrintSyntaxTree(y_ptr, 0);
+		printf("\n");
+	*/
+	draw_loop(get_expr_value(start_ptr),get_expr_value(end_ptr),get_expr_value(step_ptr),x_ptr,y_ptr)
 
 }
 
-//Ö÷º¯Êı£º²úÉúÊ½(±í´ïÊ½¼¶)Âß¼­Çø
-struct ExprNode* Expression() {
-	struct ExprNode* left, * right;
+//ä¸»å‡½æ•°ï¼šäº§ç”Ÿå¼(è¡¨è¾¾å¼çº§)é€»è¾‘åŒº
+struct ExprNode *Expression() {
+	struct ExprNode *left, * right;
 	enum Token_Type token_tmp;
 	left = Term();
 	while (token.type == PLUS || token.type == MINUS) {
@@ -112,8 +161,8 @@ struct ExprNode* Expression() {
 	return left;
 }
 
-struct ExprNode* Term() {
-	struct ExprNode* left, * right;
+struct ExprNode *Term() {
+	struct ExprNode *left, * right;
 	enum Token_Type token_tmp;
 
 	left = Factor();
@@ -126,12 +175,12 @@ struct ExprNode* Term() {
 	return left;
 }
 
-struct ExprNode* Factor() {
-	struct ExprNode* factor_Node;
+struct ExprNode *Factor() {
+	struct ExprNode *factor_Node;
 	enum Token_Type token_tmp;
 
 	if (token.type == PLUS || token.type == MINUS) {
-		struct ExprNode* ConstPtr = (struct ExprNode*)malloc(sizeof(struct ExprNode));
+		struct ExprNode *ConstPtr = (struct ExprNode *)malloc(sizeof(struct ExprNode));
 		ConstPtr->Content.CaseConst = 0;
 		ConstPtr->OpCode = CONST_ID;
 
@@ -140,21 +189,20 @@ struct ExprNode* Factor() {
 
 		factor_Node = Factor();
 		factor_Node = MakeExprNode(token_tmp, ConstPtr, factor_Node);
-	}
-	else
+	} else
 		factor_Node = Component();
 
 	return factor_Node;
 }
 
-struct ExprNode* Component() {
-	struct ExprNode* component_Node;
+struct ExprNode *Component() {
+	struct ExprNode *component_Node;
 	enum Token_Type token_tmp;
 
 	component_Node = Atom();
 
 	if (token.type == POWER) {
-		struct ExprNode* component_Node_another;
+		struct ExprNode *component_Node_another;
 		token_tmp = token.type;
 		MatchToken(POWER);
 		component_Node_another = Component();
@@ -164,143 +212,160 @@ struct ExprNode* Component() {
 	return component_Node;
 }
 
-struct ExprNode* Atom() {
-	struct ExprNode* atom_Node;
-    struct Token token_tmp = token;
+struct ExprNode *Atom() {
+	struct ExprNode *atom_Node;
+	struct Token token_tmp = token;
 	switch (token.type) {
-	case CONST_ID:
-		atom_Node = MakeExprNode(token.type, token.value); MatchToken(token.type); break;
-	case T:
-		atom_Node = MakeExprNode(token.type); MatchToken(token.type); break;
-	case FUNC:
-	{
+		case CONST_ID:
+			atom_Node = MakeExprNode(token.type, token.value);
+			MatchToken(token.type);
+			break;
+		case T:
+			atom_Node = MakeExprNode(token.type);
+			MatchToken(token.type);
+			break;
+		case FUNC: {
 
-		MatchToken(token.type); MatchToken(L_BRACKET); atom_Node = MakeExprNode(FUNC, token_tmp.FuncPtr, Expression());
-		MatchToken(R_BRACKET);
-        break;
-	}
-	case L_BRACKET:
-		MatchToken(token.type); atom_Node = Expression(); MatchToken(R_BRACKET); break;
-	default:SyntaxError(3);
+			MatchToken(token.type);
+			MatchToken(L_BRACKET);
+			atom_Node = MakeExprNode(FUNC, token_tmp.FuncPtr, Expression());
+			MatchToken(R_BRACKET);
+			break;
+		}
+		case L_BRACKET:
+			MatchToken(token.type);
+			atom_Node = Expression();
+			MatchToken(R_BRACKET);
+			break;
+		default:
+			SyntaxError(3);
 	}
 	return atom_Node;
 }
 
-//¹¹½¨Óï·¨Ê÷
-struct ExprNode* MakeExprNode(enum Token_Type opcode, ...) {//´Ëº¯Êı²ÎÊı¿É±ä
-	struct ExprNode* ExprPtr = (struct ExprNode*)malloc(sizeof(struct ExprNode));
+//æ„å»ºè¯­æ³•æ ‘
+struct ExprNode *MakeExprNode(enum Token_Type opcode, ...) {//æ­¤å‡½æ•°å‚æ•°å¯å˜
+	struct ExprNode *ExprPtr = (struct ExprNode *)malloc(sizeof(struct ExprNode));
 	va_list ArgPtr;
 	ExprPtr->OpCode = opcode;
 	va_start(ArgPtr, opcode);
 
 	switch (opcode) {
-	case CONST_ID://³£Êı½Úµã
-		ExprPtr->Content.CaseConst = (double)va_arg(ArgPtr, double); break;
-	case T://²ÎÊı½Úµã
-		ExprPtr->Content.CaseParmPtr = &Parameter; break;
-	case FUNC://º¯Êı½Úµã
-		ExprPtr->Content.CaseFunc.MathFuncPtr = (FuncPtr)va_arg(ArgPtr, FuncPtr);
-		ExprPtr->Content.CaseFunc.Child = (struct ExprNode*)va_arg(ArgPtr, struct ExprNode*); break;
-	default://¶şÔªÔËËã½Úµã
-		ExprPtr->Content.CaseOperator.Left = (struct ExprNode*)va_arg(ArgPtr, struct ExprNode*);
-		ExprPtr->Content.CaseOperator.Right = (struct ExprNode*)va_arg(ArgPtr, struct ExprNode*);
+		case CONST_ID://å¸¸æ•°èŠ‚ç‚¹
+			ExprPtr->Content.CaseConst = (double)va_arg(ArgPtr, double);
+			break;
+		case T://å‚æ•°èŠ‚ç‚¹
+			ExprPtr->Content.CaseParmPtr = &Parameter;
+			break;
+		case FUNC://å‡½æ•°èŠ‚ç‚¹
+			ExprPtr->Content.CaseFunc.MathFuncPtr = (FuncPtr)va_arg(ArgPtr, FuncPtr);
+			ExprPtr->Content.CaseFunc.Child = (struct ExprNode *)va_arg(ArgPtr, struct ExprNode *);
+			break;
+		default://äºŒå…ƒè¿ç®—èŠ‚ç‚¹
+			ExprPtr->Content.CaseOperator.Left = (struct ExprNode *)va_arg(ArgPtr, struct ExprNode *);
+			ExprPtr->Content.CaseOperator.Right = (struct ExprNode *)va_arg(ArgPtr, struct ExprNode *);
 	}
 	return ExprPtr;
 }
 
-//¸¨Öúº¯Êı
+//è¾…åŠ©å‡½æ•°
 void FetchToken() {
 	token = scan.GetToken();
 	if (token.type == ERRTOKEN)
 		SyntaxError(1);
 }
 
-void MatchToken(enum Token_Type AToken) {//ÅĞ¶ÏÈ«¾Ö±äÁ¿tokenµ±Ç°ÀàĞÍÖµÊÇ·ñÓëATokenÆ¥Åä
+void MatchToken(enum Token_Type AToken) {//åˆ¤æ–­å…¨å±€å˜é‡tokenå½“å‰ç±»å‹å€¼æ˜¯å¦ä¸ATokenåŒ¹é…
 	if (token.type != AToken)
 		SyntaxError(4);
 	else {
-		printf("Match Token %s\n", token.lexeme);//²âÊÔÓï¾ä
+		//printf("Match Token %s\n", token.lexeme);//æµ‹è¯•è¯­å¥
 		FetchToken();
 	}
 }
 
-void SyntaxError(int case_of) {//´íÎó´¦Àíº¯Êı
+void SyntaxError(int case_of) {//é”™è¯¯å¤„ç†å‡½æ•°
 	switch (case_of) {
-	case 1://ÓÉFetchTokenº¯ÊıÅ×³ö£º´Ê·¨·ÖÎö»ñÈ¡µÄ¼ÇºÅÀàĞÍÎªERRTOKEN,¼´²»¹¹³ÉÕıÈ·µÄµ¥´Ê
-		printf("[*]Error code %d: Incorrect word:%s\n", case_of, token.lexeme);
-		break;
-	case 2://ÓÉStatementº¯ÊıÅ×³ö£º²»·ûºÏÎÄ·¨¶¨Òå£¬¾ä×Ó¿ªÍ·µÄToken²»ÕıÈ·
-		printf("[*]Error code %d:Incorrect start of sentence:%s\n", case_of, token.lexeme);
-		break;
-	case 3://ÓÉAtomº¯ÊıÅ×³ö£º²»·ûºÏÎÄ·¨¶¨Òå£¬±í´ïÊ½²»ÕıÈ·
-		printf("[*]Error code %d:Incorrect Expression:%s\n", case_of, token.lexeme);
-		break;
-	case 4://ÓÉMatchTokenº¯ÊıÅ×³ö£º²»·ûºÏÎÄ·¨¶¨Òå£¬Óï¾ä´íÎó£¨±£Áô×Ö¡¢±êµã·ûµÈÆ¥ÅäÊ§°Ü£©
-		printf("[*]Error code %d:Incorrect Match:%s\n", case_of, token.lexeme);
-		break;
+		case 1://ç”±FetchTokenå‡½æ•°æŠ›å‡ºï¼šè¯æ³•åˆ†æè·å–çš„è®°å·ç±»å‹ä¸ºERRTOKEN,å³ä¸æ„æˆæ­£ç¡®çš„å•è¯
+			printf("[*]Error code %d: Incorrect word:%s\n", case_of, token.lexeme);
+			break;
+		case 2://ç”±Statementå‡½æ•°æŠ›å‡ºï¼šä¸ç¬¦åˆæ–‡æ³•å®šä¹‰ï¼Œå¥å­å¼€å¤´çš„Tokenä¸æ­£ç¡®
+			printf("[*]Error code %d:Incorrect start of sentence:%s\n", case_of, token.lexeme);
+			break;
+		case 3://ç”±Atomå‡½æ•°æŠ›å‡ºï¼šä¸ç¬¦åˆæ–‡æ³•å®šä¹‰ï¼Œè¡¨è¾¾å¼ä¸æ­£ç¡®
+			printf("[*]Error code %d:Incorrect Expression:%s\n", case_of, token.lexeme);
+			break;
+		case 4://ç”±MatchTokenå‡½æ•°æŠ›å‡ºï¼šä¸ç¬¦åˆæ–‡æ³•å®šä¹‰ï¼Œè¯­å¥é”™è¯¯ï¼ˆä¿ç•™å­—ã€æ ‡ç‚¹ç¬¦ç­‰åŒ¹é…å¤±è´¥ï¼‰
+			printf("[*]Error code %d:Incorrect Match:%s\n", case_of, token.lexeme);
+			break;
 	}
 	system("pause");
-	exit(0);//³ÌĞòÖÕÖ¹
+	exit(0);//ç¨‹åºç»ˆæ­¢
 }
 
 
-//²âÊÔº¯Êı
-void PrintSyntaxTree(struct ExprNode* root, int indent) {//´òÓ¡±í´ïÊ½µÄÓï·¨Ê÷
-	char blank[50]; blank[indent] = '\0';
+//æµ‹è¯•å‡½æ•°
+void PrintSyntaxTree(struct ExprNode *root, int indent) {//æ‰“å°è¡¨è¾¾å¼çš„è¯­æ³•æ ‘
+	char blank[50];
+	blank[indent] = '\0';
 	for (int i = 0; i < indent; i++)
 		blank[i] = ' ';
 
 	switch (root->OpCode) {
-	case CONST_ID:printf("%s%f\n", blank, root->Content.CaseConst); break;
+		case CONST_ID:
+			printf("%s%f\n", blank, root->Content.CaseConst);
+			break;
 
-	case T:printf("%s%s\n", blank, "T"); break;
+		case T:
+			printf("%s%s\n", blank, "T");
+			break;
 
-	case FUNC:
-		printf("%s%x\n", blank, root->Content.CaseFunc.MathFuncPtr);
-		if (root->Content.CaseFunc.Child != NULL)
-			PrintSyntaxTree(root->Content.CaseFunc.Child, indent + 1);
-		break;
+		case FUNC:
+			printf("%s%x\n", blank, root->Content.CaseFunc.MathFuncPtr);
+			if (root->Content.CaseFunc.Child != NULL)
+				PrintSyntaxTree(root->Content.CaseFunc.Child, indent + 1);
+			break;
 
-	default:
-		switch (root->OpCode) {
-		case PLUS:
-			printf("%s%s\n", blank, "+");
-			if (root->Content.CaseOperator.Left == NULL)
-				printf("%s %s\n", blank, "0.0000");
-			else {
-				PrintSyntaxTree(root->Content.CaseOperator.Left, indent + 1);
-				PrintSyntaxTree(root->Content.CaseOperator.Right, indent + 1);
+		default:
+			switch (root->OpCode) {
+				case PLUS:
+					printf("%s%s\n", blank, "+");
+					if (root->Content.CaseOperator.Left == NULL)
+						printf("%s %s\n", blank, "0.0000");
+					else {
+						PrintSyntaxTree(root->Content.CaseOperator.Left, indent + 1);
+						PrintSyntaxTree(root->Content.CaseOperator.Right, indent + 1);
+					}
+					break;
+
+				case MINUS:
+					printf("%s%s\n", blank, "-");
+					if (root->Content.CaseOperator.Left == NULL)
+						printf("%s %s\n", blank, "0.0000");
+					else {
+						PrintSyntaxTree(root->Content.CaseOperator.Left, indent + 1);
+						PrintSyntaxTree(root->Content.CaseOperator.Right, indent + 1);
+					}
+					break;
+
+				case MUL:
+					printf("%s%s\n", blank, "*");
+					PrintSyntaxTree(root->Content.CaseOperator.Left, indent + 1);
+					PrintSyntaxTree(root->Content.CaseOperator.Right, indent + 1);
+					break;
+
+				case DIV:
+					printf("%s%s\n", blank, "/");
+					PrintSyntaxTree(root->Content.CaseOperator.Left, indent + 1);
+					PrintSyntaxTree(root->Content.CaseOperator.Right, indent + 1);
+					break;
+
+				case POWER:
+					printf("%s%s\n", blank, "**");
+					PrintSyntaxTree(root->Content.CaseOperator.Left, indent + 1);
+					PrintSyntaxTree(root->Content.CaseOperator.Right, indent + 1);
+					break;
 			}
-			break;
-
-		case MINUS:
-			printf("%s%s\n", blank, "-");
-			if (root->Content.CaseOperator.Left == NULL)
-				printf("%s %s\n", blank, "0.0000");
-			else {
-				PrintSyntaxTree(root->Content.CaseOperator.Left, indent + 1);
-				PrintSyntaxTree(root->Content.CaseOperator.Right, indent + 1);
-			}
-			break;
-
-		case MUL:
-			printf("%s%s\n", blank, "*");
-			PrintSyntaxTree(root->Content.CaseOperator.Left, indent + 1);
-			PrintSyntaxTree(root->Content.CaseOperator.Right, indent + 1);
-			break;
-
-		case DIV:
-			printf("%s%s\n", blank, "/");
-			PrintSyntaxTree(root->Content.CaseOperator.Left, indent + 1);
-			PrintSyntaxTree(root->Content.CaseOperator.Right, indent + 1);
-			break;
-
-		case POWER:
-			printf("%s%s\n", blank, "**");
-			PrintSyntaxTree(root->Content.CaseOperator.Left, indent + 1);
-			PrintSyntaxTree(root->Content.CaseOperator.Right, indent + 1);
-			break;
-		}
 	}
 }
 
