@@ -9,7 +9,7 @@
 
 //全局变量区
 extern struct Token token;
-
+extern HDC hDC;
 extern double Parameter; //参数
 extern double Origin_x, Origin_y ;  //横、纵平移距离
 extern double Rot_ang; //旋转角度
