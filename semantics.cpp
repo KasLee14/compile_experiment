@@ -2,7 +2,6 @@
 #include <graphics.h>
 #include <conio.h>
 
-struct Token token;
 double Parameter = 0;
 double Origin_x = 0.0, Origin_y = 0.0;
 double Rot_ang = 0.0;
@@ -65,7 +64,7 @@ void cal_coord(struct ExprNode *x_ptr, struct ExprNode *y_ptr) {
 
 	// 返回变换后点的坐标
 	Draw_x = x_val;
-    Draw_y= y_val;
+    	Draw_y= y_val;
 }
 
 // 绘制一个点
@@ -78,7 +77,7 @@ void draw_loop(double start_val, double end_val, double step_val, struct ExprNod
 {
 	initgraph(640, 480);
 	for (Parameter = start_val; Parameter <= end_val; Parameter += step_val) {
-		cal_coord(x_ptr, y_ptr,);
+		cal_coord(x_ptr, y_ptr);
 		putpixel(Draw_x, Draw_y, RED);
 	}
 	_getch();
