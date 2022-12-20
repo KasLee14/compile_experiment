@@ -22,3 +22,5 @@ void cal_coord(struct ExprNode *x_nptr, struct ExprNode *y_nptr, double &x, doub
 void draw_pixel(unsigned long x, unsigned long y);
 // Õº–ŒªÊ÷∆
 void draw_loop(double start_val, double end_val, double step_val, struct ExprNode *x_ptr, struct ExprNode *y_ptr);
+
+#endif

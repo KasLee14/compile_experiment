@@ -1,7 +1,8 @@
 #ifndef COMPILE_EXPERIMENT_SCANNER_H
 #define COMPILE_EXPERIMENT_SCANNER_H
 
-#include <bits/stdc++.h>
+#include <stdio.h>
+#include <math.h>
 
 enum Token_Type			  // 记号的类别
 {

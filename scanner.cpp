@@ -79,7 +79,7 @@ Token scanner::GetToken(){
             return token;
         }
         if(next_char == '\n') line_no++;
-        if( !isspace(next_char)) break;
+        if(!isspace(next_char)) break;
     }
 
     add_in_token_str(next_char);  //将读取到的字符放入缓存区
