@@ -3,7 +3,7 @@
 #include <graphics.h>
 
 
-#include "semantic.h"
+#include "semantics.h"
 
 struct Token token;
 double Parameter = 0;
@@ -13,7 +13,7 @@ double Scale_x = 1, Scale_y = 1;
 double Draw_x, Draw_y;
 
 
-//¼ÆËã±í´ïÊ½µÄÖµ
+//è®¡ç®—è¡¨è¾¾å¼çš„å€¼
 double get_expr_value(struct ExprNode *root) {
 	if (root == NULL)
 		return 0.0;
@@ -45,38 +45,38 @@ double get_expr_value(struct ExprNode *root) {
 	}
 }
 
-//¼ÆËãµãµÄÊµ¼Ê×ø±êÖµ
+//è®¡ç®—ç‚¹çš„å®é™…åæ ‡å€¼
 void CalcCoord(struct ExprNode *x_nptr, struct ExprNode *y_nptr, double &x, double &y) {
 	double x_val, x_temp, y_val;
 
-	// ¼ÆËã±í´ïÊ½µÄÖµ£¬µÃµ½µãµÄÔ­Ê¼×ø±ê
+	// è®¡ç®—è¡¨è¾¾å¼çš„å€¼ï¼Œå¾—åˆ°ç‚¹çš„åŸå§‹åæ ‡
 	x_val = get_expr_value(x_ptr);
 	y_val = get_expr_value(y_ptr);
 
-	// ±ÈÀı±ä»»
+	// æ¯”ä¾‹å˜æ¢
 	x_val *= Scale_x ;
 	y_val *= Scale_y ;
 
-	// Ğı×ª±ä»»
+	// æ—‹è½¬å˜æ¢
 	x_temp = x_val * cos(rot_angle) + y_val * sin(rot_angle);
 	y_val  = y_val * cos(rot_angle) - x_val * sin(rot_angle);
 	x_val  = x_temp;
 
-	// Æ½ÒÆ±ä»»
+	// å¹³ç§»å˜æ¢
 	x_val += Origin_x;
 	y_val += Origin_y;
 
-	// ·µ»Ø±ä»»ºóµãµÄ×ø±ê
+	// è¿”å›å˜æ¢åç‚¹çš„åæ ‡
 	x = x_val;
 	y = y_val;
 }
 
-// »æÖÆÒ»¸öµã
+// ç»˜åˆ¶ä¸€ä¸ªç‚¹
 void draw_pixel(unsigned long x, unsigned long y) {
 	putpixel(x, y, RED);
 }
 
-// Í¼ĞÎ»æÖÆ
+// å›¾å½¢ç»˜åˆ¶
 void draw_loop(double start_val, double end_val, double step_val, struct ExprNode *x_ptr, struct ExprNode *y_ptr);
 {
 	initgraph(640, 480);
