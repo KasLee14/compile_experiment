@@ -1,5 +1,8 @@
 #include "parse.h"
+#include "stdio.h"
+#ifdef _PASER_WITH_SEMANITCS
 #include "semantics.cpp"
+#endif
 
 //本文件在语法分析器模块的基础上，增加了语义处理所需的代码
 scanner scan;
@@ -65,8 +68,10 @@ void OriginStatment() {
 		PrintSyntaxTree(origin_y, 0);
 		printf("\n");
 	*/
+#ifdef _PASER_WITH_SEMANITCS
 	Origin_x = get_expr_value(origin_x);
 	Origin_y = get_expr_value(origin_y);
+#endif
 }
 
 void RotStatement() {
@@ -81,9 +86,9 @@ void RotStatement() {
 	PrintSyntaxTree(rotate, 0);
 	printf("\n");
 	*/
-	
+#ifdef _PASER_WITH_SEMANITCS
 	Rot_ang = get_expr_value(rotate);
-
+#endif
 }
 
 void ScaleStatment() {
@@ -103,8 +108,10 @@ void ScaleStatment() {
 		printf("[*]SyntaxTree:\n");
 		PrintSyntaxTree(scale_y, 0); printf("\n");
 	*/
+#ifdef _PASER_WITH_SEMANITCS
 	Scale_x = get_expr_value(scale_x);
 	Scale_y = get_expr_value(scale_y);
+#endif
 }
 
 void ForStatement() {
@@ -143,8 +150,9 @@ void ForStatement() {
 		PrintSyntaxTree(y_ptr, 0);
 		printf("\n");
 	*/
+#ifdef _PASER_WITH_SEMANITCS
 	draw_loop(get_expr_value(start_ptr),get_expr_value(end_ptr),get_expr_value(step_ptr),x_ptr,y_ptr);
-
+#endif
 }
 
 //主函数：产生式(表达式级)逻辑区
